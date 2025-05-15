@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Nhận diện thiết bị bảo hộ - YOLOv8</title>
+    <style>
+      .top-bar {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .result-container {
+        display: flex;
+        gap: 30px;
+        align-items: flex-start;
+      }
+      #image-preview {
+        max-width: 600px;
+        border: 1px solid #ccc;
+      }
+    </style>
+    <script>
+      function previewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function () {
+          const preview = document.getElementById("image-preview");
+          preview.src = reader.result;
+          preview.style.display = "block";
+        };
+        reader.readAsDataURL(event.target.files[0]);
+      }
+    </script>
+  </head>
+  <body style="font-family: Arial; padding: 20px;">
+    <h2>Nhận diện thiết bị bảo hộ cá nhân (PPE)</h2>
+
+    <form method="post" enctype="multipart/form-data" class="top-bar">
+      <input type="file" name="image" accept="image/*" onchange="previewImage(event)" required>
+      <input type="submit" value="Nhận diện">
+    </form>
+
+    <div class="result-container">
+      <img id="image-preview"
+           src="{{ result_img if result_img else '#' }}"
+           alt="Ảnh sẽ hiển thị tại đây"
+           style="display: {{ 'block' if result_img else 'none' }};">
+
+      {% if detected %}
+      <div>
+        <h4>Nhận diện được các đối tượng:</h4>
+        <ul>
+          {% for item in detected %}
+            <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+    </div>
+  </body>
+</html>

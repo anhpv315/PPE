@@ -46,7 +46,7 @@ def index():
             image.save(image_path)
 
             # Chạy mô hình
-            results = model.predict(source=image_path, save=True, conf=0.25)
+            results = model.predict(source=image_path, save=True, conf=0.75)
 
             # Lưu ảnh kết quả
             result_image_path = os.path.join(app.config['OUTPUT_FOLDER'], image.filename)
